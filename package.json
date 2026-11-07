@@ -1,0 +1,16 @@
+{
+  "name": "eastel-tutorial",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Portal tutorial onboarding SIM Eastel (LMS ringkas) - CikguKB",
+  "type": "module",
+  "scripts": {
+    "build:qr": "node scripts/gen-qr.mjs",
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy"
+  },
+  "devDependencies": {
+    "qrcode": "^1.5.4",
+    "wrangler": "^4"
+  }
+}
