@@ -28,7 +28,7 @@ wrangler.jsonc     # konfigurasi Cloudflare Worker
 | Video YouTube | `public/content.js` → `VIDEO.youtube.id`; time code setiap bab di `BAB[n].video.mula` (saat) |
 | Video Drive / PDF | `public/content.js` → `VIDEO.hd`, `VIDEO.whatsapp`, `VIDEO.pdf` (kongsi "anyone with link") |
 | Langkah bab / tambah bab | `public/content.js` → `BAB` (tetapkan `akanDatang: false` dan isi `langkah`) |
-| OG image (preview WhatsApp/FB) | edit `scripts/og/og.html`, jalankan `npm run build:og` → `public/assets/og.png` & `og-square.png` |
+| OG image (preview WhatsApp/FB) | edit `scripts/og/og.html`, jalankan `npm run build:og` → `public/assets/og.jpg` & `og-square.jpg` (kekalkan < 300 KB untuk WhatsApp) |
 | Avatar mentor | ganti `public/assets/avatar-cikgukb.svg` (atau tukar `src` dalam `app.js` ke `.png/.jpg`) |
 
 Andaian: app Eastel mengimbas QR yang mengandungi ID ahli sebagai teks biasa (`E-0222933`).
