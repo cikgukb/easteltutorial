@@ -25,7 +25,8 @@ wrangler.jsonc     # konfigurasi Cloudflare Worker
 |---|---|
 | ID upline (sekarang `E-0222933`) | `public/content.js` → `UPLINE.id` **dan** `scripts/gen-qr.mjs` → `UPLINE_ID`, kemudian `npm run build:qr` |
 | Warna brand | `public/styles.css` blok `:root` (`--brand-*`, `--primary`) |
-| Video / PDF | `public/content.js` → `VIDEO` (ID fail Google Drive, kongsi "anyone with link") |
+| Video YouTube | `public/content.js` → `VIDEO.youtube.id`; time code setiap bab di `BAB[n].video.mula` (saat) |
+| Video Drive / PDF | `public/content.js` → `VIDEO.hd`, `VIDEO.whatsapp`, `VIDEO.pdf` (kongsi "anyone with link") |
 | Langkah bab / tambah bab | `public/content.js` → `BAB` (tetapkan `akanDatang: false` dan isi `langkah`) |
 | Avatar mentor | ganti `public/assets/avatar-cikgukb.svg` (atau tukar `src` dalam `app.js` ke `.png/.jpg`) |
 
@@ -65,4 +66,4 @@ Nama Worker sama (`eastel-tutorial`), jadi URL kekal. Laman langsung: https://ea
 
 - Bab 1–6 diambil daripada *Buku Panduan Lengkap EASTEL (CikguKB)*.
 - Bab 7–12 wujud dalam indeks buku tetapi langkahnya belum ada → dipaparkan sebagai "Akan datang".
-- Video (50MB / 29MB) melebihi had 25 MiB sefail Cloudflare, jadi di-embed terus daripada Google Drive.
+- Video utama di-embed daripada YouTube (`youtube-nocookie.com`) dengan `start`/`end` mengikut time code bab; Drive kekal sebagai pautan sandaran (fail 50MB / 29MB melebihi had 25 MiB sefail Cloudflare).

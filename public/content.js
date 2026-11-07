@@ -8,6 +8,11 @@ export const UPLINE = {
 };
 
 export const VIDEO = {
+  youtube: {
+    id: "4zuzKzdDlvM",
+    url: "https://youtu.be/4zuzKzdDlvM",
+    tajuk: "Panduan Lengkap Eastel (YouTube)",
+  },
   hd: {
     tajuk: "Video Panduan Penuh (HD)",
     embed: "https://drive.google.com/file/d/1muqy4xqN3PVru0rRQ_ICU1IGJ0otgqmu/preview",
@@ -23,6 +28,16 @@ export const VIDEO = {
   },
 };
 
+/* Pautan YouTube ke masa tertentu (saat). */
+export const youtubeWatchUrl = (t = 0) => `${VIDEO.youtube.url}?t=${Math.max(0, Math.floor(t))}`;
+export const youtubeEmbedUrl = (t = 0, end) => {
+  const q = new URLSearchParams({ start: String(Math.max(0, Math.floor(t))), rel: "0", modestbranding: "1", autoplay: "1", playsinline: "1" });
+  if (end) q.set("end", String(Math.floor(end)));
+  return `https://www.youtube-nocookie.com/embed/${VIDEO.youtube.id}?${q}`;
+};
+export const youtubeThumb = `https://i.ytimg.com/vi/${VIDEO.youtube.id}/hqdefault.jpg`;
+export const fmtMasa = (t) => `${Math.floor(t / 60)}:${String(Math.floor(t % 60)).padStart(2, "0")}`;
+
 export const SOKONGAN = {
   careline: "011 7033 7777",
   easyMenu: "330",
@@ -32,7 +47,7 @@ export const SOKONGAN = {
 /* Setiap langkah: { t: teks, upline: true (paparkan QR), tip: nota, table: [...] } */
 export const BAB = [
   {
-    id: 1,
+    id: 1, video: { mula: 22 },
     slug: "daftar-akaun",
     tajuk: "Daftar Akaun Eastel",
     soalan: "Bagaimana nak daftar akaun Eastel?",
@@ -61,7 +76,7 @@ export const BAB = [
     ],
   },
   {
-    id: 2,
+    id: 2, video: { mula: 113 },
     slug: "kekalkan-nombor-mnp",
     tajuk: "Kekalkan Nombor Lama (MNP)",
     soalan: "Cara tukar telco ke Eastel sambil kekalkan nombor lama.",
@@ -95,7 +110,7 @@ export const BAB = [
     ],
   },
   {
-    id: 3,
+    id: 3, video: { mula: 235 },
     slug: "balas-sms-port-out",
     tajuk: "Balas SMS Port-Out",
     soalan: "Cara balas mesej port-out daripada telco lama.",
@@ -126,7 +141,7 @@ export const BAB = [
     ],
   },
   {
-    id: 4,
+    id: 4, video: { mula: 268 },
     slug: "tambah-nilai",
     tajuk: "Cara Tambah Nilai",
     soalan: "Bagaimana nak buat tambah nilai (reload)?",
@@ -142,7 +157,7 @@ export const BAB = [
     ],
   },
   {
-    id: 5,
+    id: 5, video: { mula: 299 },
     slug: "beli-pelan-data",
     tajuk: "Beli Pelan Data",
     soalan: "Bagaimana nak beli pelan internet?",
@@ -173,7 +188,7 @@ export const BAB = [
     ],
   },
   {
-    id: 6,
+    id: 6, video: { mula: 331 },
     slug: "aktifkan-eastel-wallet",
     tajuk: "Aktifkan Eastel Wallet",
     soalan: "Bagaimana nak aktifkan Eastel Wallet dan tambah nilai e-dompet?",
@@ -193,10 +208,10 @@ export const BAB = [
       { t: "Bila bayaran selesai, skrin Payment Successful akan keluar. Tekan Done." },
     ],
   },
-  { id: 7, slug: "cari-kod-rujukan", tajuk: "Cari Kod Rujukan", ringkas: "Cara dapatkan ID ahli / kod rujukan anda sendiri.", ikon: "search", masa: "—", akanDatang: true, langkah: [] },
-  { id: 8, slug: "tambah-nilai-orang-lain", tajuk: "Tambah Nilai Untuk Orang Lain", ringkas: "Reload nombor Eastel rakan atau keluarga.", ikon: "gift", masa: "—", akanDatang: true, langkah: [] },
-  { id: 9, slug: "hantar-semula-mnp", tajuk: "Hantar Semula MNP", ringkas: "Jika permohonan pindah nombor ditolak.", ikon: "refresh", masa: "—", akanDatang: true, langkah: [] },
-  { id: 10, slug: "semak-insentif", tajuk: "Semak Insentif", ringkas: "Lihat prestasi insentif dan pangkat ahli.", ikon: "trophy", masa: "—", akanDatang: true, langkah: [] },
-  { id: 11, slug: "semak-kelayakan-komisen", tajuk: "Semak Kelayakan Komisen", ringkas: "Syarat kelayakan komisen Eastelpreneur.", ikon: "percent", masa: "—", akanDatang: true, langkah: [] },
-  { id: 12, slug: "beli-starter-kit", tajuk: "Beli Eastel Starter Kit (ESK)", ringkas: "Cara pesan SIM/ESK melalui app.", ikon: "box", masa: "—", akanDatang: true, langkah: [] },
+  { id: 7, video: { mula: 404 }, slug: "cari-kod-rujukan", tajuk: "Cari Kod Rujukan", ringkas: "Cara dapatkan ID ahli / kod rujukan anda sendiri.", ikon: "search", masa: "—", akanDatang: true, langkah: [] },
+  { id: 8, video: { mula: 430 }, slug: "tambah-nilai-orang-lain", tajuk: "Tambah Nilai Untuk Orang Lain", ringkas: "Reload nombor Eastel rakan atau keluarga.", ikon: "gift", masa: "—", akanDatang: true, langkah: [] },
+  { id: 9, video: { mula: 461 }, slug: "hantar-semula-mnp", tajuk: "Hantar Semula MNP", ringkas: "Jika permohonan pindah nombor ditolak.", ikon: "refresh", masa: "—", akanDatang: true, langkah: [] },
+  { id: 10, video: { mula: 495 }, slug: "semak-insentif", tajuk: "Semak Insentif", ringkas: "Lihat prestasi insentif dan pangkat ahli.", ikon: "trophy", masa: "—", akanDatang: true, langkah: [] },
+  { id: 11, video: { mula: 506 }, slug: "semak-kelayakan-komisen", tajuk: "Semak Kelayakan Komisen", ringkas: "Syarat kelayakan komisen Eastelpreneur.", ikon: "percent", masa: "—", akanDatang: true, langkah: [] },
+  { id: 12, video: { mula: 541 }, slug: "beli-starter-kit", tajuk: "Beli Eastel Starter Kit (ESK)", ringkas: "Cara pesan SIM/ESK melalui app.", ikon: "box", masa: "—", akanDatang: true, langkah: [] },
 ];

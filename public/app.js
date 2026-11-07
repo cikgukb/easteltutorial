@@ -1,4 +1,4 @@
-import { BAB, UPLINE, VIDEO, SOKONGAN } from "./content.js";
+import { BAB, UPLINE, VIDEO, SOKONGAN, youtubeWatchUrl, youtubeEmbedUrl, youtubeThumb, fmtMasa } from "./content.js";
 
 /* ---------- Progres (localStorage) ---------- */
 const KEY = "eastel.progress.v1";
@@ -81,6 +81,43 @@ function tableBlock(tb) {
   </table></div>${tb.nota ? `<p class="note">${esc(tb.nota)}</p>` : ""}`;
 }
 
+/* ---------- Video (YouTube + time code) ---------- */
+const segmen = (b) => {
+  const i = BAB.indexOf(b); const next = BAB[i + 1];
+  return { mula: b.video?.mula ?? 0, tamat: next?.video?.mula };
+};
+function mountPlayer(frame, t = 0, end, title = VIDEO.youtube.tajuk) {
+  frame.innerHTML = `<iframe src="${youtubeEmbedUrl(t, end)}" title="${esc(title)}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>`;
+}
+function posterHtml(label, t = 0) {
+  return `<button class="video-poster" type="button" data-play="${t}" aria-label="Main video: ${esc(label)}">
+      <img class="poster-img" src="${youtubeThumb}" alt="" loading="lazy" width="480" height="360">
+      <span class="play">${icon("play")}</span>
+      <span class="poster-label">${esc(label)}</span>
+    </button>`;
+}
+function babVideoCard(b) {
+  const { mula, tamat } = segmen(b);
+  return `
+    <div class="card video-card bab-video">
+      <div class="video-frame" data-frame data-start="${mula}" data-end="${tamat ?? ""}" data-title="Bab ${b.id}: ${esc(b.tajuk)}">
+        ${posterHtml(`Tonton Bab ${b.id} dalam video · ${fmtMasa(mula)}${tamat ? "–" + fmtMasa(tamat) : ""}`, mula)}
+      </div>
+      <div class="video-links">
+        <a class="btn btn-sm btn-outline" href="${youtubeWatchUrl(mula)}" target="_blank" rel="noopener">${icon("play")} Buka di YouTube (${fmtMasa(mula)})</a>
+        <a class="btn btn-sm btn-ghost" href="${VIDEO.pdf.pautan}" target="_blank" rel="noopener">${icon("file")} PDF</a>
+      </div>
+    </div>`;
+}
+/* Thumbnail YouTube gagal dimuat → sembunyikan, kekalkan latar gradien */
+document.addEventListener("error", (e) => { if (e.target?.classList?.contains("poster-img")) e.target.remove(); }, true);
+/* Delegasi: poster → iframe (lazy) */
+document.addEventListener("click", (e) => {
+  const btn = e.target.closest("[data-play]"); if (!btn) return;
+  const frame = btn.closest("[data-frame]"); if (!frame) return;
+  mountPlayer(frame, Number(frame.dataset.start || 0), frame.dataset.end ? Number(frame.dataset.end) : undefined, frame.dataset.title);
+});
+
 /* ---------- Halaman utama ---------- */
 function renderHome() {
   const jumlahLangkah = babAktif.reduce((a, b) => a + b.langkah.length, 0);
@@ -116,14 +153,16 @@ function renderHome() {
       <div class="wrap">
         <div class="section-head"><div><h2>Video panduan penuh</h2><p>Tonton dulu sekali lalu, kemudian ikut bab satu persatu.</p></div></div>
         <div class="card video-card">
-          <div class="video-frame" id="video-frame">
-            <button class="video-poster" type="button" id="video-play" aria-label="Main video panduan penuh">
-              <span class="play">${icon("play")}</span>
-              <span>${esc(VIDEO.hd.tajuk)} · Google Drive</span>
-            </button>
+          <div class="video-frame" id="video-frame" data-frame data-start="0" data-title="${esc(VIDEO.youtube.tajuk)}">
+            ${posterHtml(VIDEO.youtube.tajuk + " · 9 min", 0)}
           </div>
+          <ol class="chapters" id="chapters" aria-label="Bab dalam video">
+            <li><button type="button" data-seek="0" aria-current="true"><span class="t">0:00</span><span>Senarai kandungan</span></button></li>
+            ${BAB.map((b) => `<li><button type="button" data-seek="${b.video.mula}"><span class="t">${fmtMasa(b.video.mula)}</span><span>Tutorial ${b.id}: ${esc(b.tajuk)}</span></button></li>`).join("")}
+          </ol>
           <div class="video-links">
-            <a class="btn btn-sm btn-outline" href="${VIDEO.hd.pautan}" target="_blank" rel="noopener">${icon("play")} Buka di Drive</a>
+            <a class="btn btn-sm btn-outline" href="${VIDEO.youtube.url}" target="_blank" rel="noopener">${icon("play")} Buka di YouTube</a>
+            <a class="btn btn-sm btn-outline" href="${VIDEO.hd.pautan}" target="_blank" rel="noopener">${icon("play")} Versi Drive (HD)</a>
             <a class="btn btn-sm btn-outline" href="${VIDEO.whatsapp.pautan}" target="_blank" rel="noopener">${icon("whatsapp")} ${esc(VIDEO.whatsapp.tajuk)}</a>
             <a class="btn btn-sm btn-outline" href="${VIDEO.pdf.pautan}" target="_blank" rel="noopener">${icon("file")} ${esc(VIDEO.pdf.tajuk)}</a>
           </div>
@@ -179,8 +218,14 @@ function renderHome() {
     </section>
   </div>`;
 
-  $("#video-play")?.addEventListener("click", () => {
-    $("#video-frame").innerHTML = `<iframe src="${VIDEO.hd.embed}" title="${esc(VIDEO.hd.tajuk)}" allow="autoplay; fullscreen" allowfullscreen loading="lazy"></iframe>`;
+  $("#chapters")?.addEventListener("click", (e) => {
+    const btn = e.target.closest("[data-seek]"); if (!btn) return;
+    const t = Number(btn.dataset.seek);
+    document.querySelectorAll("#chapters [data-seek]").forEach((x) => x.removeAttribute("aria-current"));
+    btn.setAttribute("aria-current", "true");
+    const frame = $("#video-frame"); frame.dataset.start = String(t);
+    mountPlayer(frame, t, undefined, VIDEO.youtube.tajuk);
+    frame.scrollIntoView({ behavior: "smooth", block: "center" });
   });
   document.title = "Panduan Eastel · Tutorial Onboarding SIM";
 }
@@ -200,10 +245,12 @@ function renderBab(id) {
         <div class="crumbs"><a href="#/">${icon("arrow-left")} Utama</a><span>/</span><span>Bab ${b.id}</span></div>
         <h1>${esc(b.tajuk)}</h1><p>${esc(b.ringkas)}</p>
       </div></section>
-      <section><div class="wrap"><div class="card soon-box">
+      <section><div class="wrap">
+        ${babVideoCard(b)}
+        <div class="card soon-box">
         ${icon("lock")}
-        <h2 style="margin:12px 0 6px">Bab ini akan datang</h2>
-        <p class="note" style="font-size:15px">Kandungan sedang disediakan. Sementara itu, rujuk <a href="${VIDEO.pdf.pautan}" target="_blank" rel="noopener">buku panduan PDF</a> atau hubungi upline anda.</p>
+        <h2 style="margin:12px 0 6px">Teks langkah akan datang</h2>
+        <p class="note" style="font-size:15px">Buat masa ini ikut bahagian video di atas. Teks langkah demi langkah sedang disediakan — atau rujuk <a href="${VIDEO.pdf.pautan}" target="_blank" rel="noopener">buku panduan PDF</a>.</p>
         <div class="bab-nav" style="justify-content:center">
           ${prev ? `<a class="btn btn-outline" href="#/bab/${prev.id}">${icon("arrow-left")} Bab ${prev.id}</a>` : ""}
           <a class="btn btn-primary" href="#/">Kembali ke senarai bab</a>
@@ -230,6 +277,7 @@ function renderBab(id) {
 
     <section>
       <div class="wrap">
+        ${babVideoCard(b)}
         <ol class="steps" id="steps">
           ${b.langkah.map((s, i) => `
             <li class="card step ${isDone(b, i) ? "done" : ""} ${i === cur ? "current" : ""}" id="langkah-${i + 1}" data-i="${i}">
