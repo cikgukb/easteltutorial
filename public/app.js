@@ -137,7 +137,7 @@ function renderHome() {
         </div>
         <div>
           <div class="mentor">
-            <img src="assets/avatar-cikgukb.svg" alt="Avatar CikguKB" width="72" height="72">
+            <img src="assets/avatar-cikgukb.png" alt="Avatar CikguKB" width="72" height="72">
             <div><strong>CikguKB</strong><span>Mentor &amp; upline anda · ID ${esc(UPLINE.id)}</span></div>
           </div>
           <div class="hero-stats">
@@ -358,5 +358,4 @@ document.addEventListener("click", (e) => {
   }
 });
 
-$("#year").textContent = new Date().getFullYear();
 route();

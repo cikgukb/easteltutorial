@@ -14,7 +14,7 @@ public/            # fail statik yang diservis
   app.js           # router (#/bab/1), render, progres localStorage
   content.js       # DATA: bab, langkah, video, upline, sokongan
   assets/qr-upline.svg          # dijana oleh scripts/gen-qr.mjs
-  assets/avatar-cikgukb.svg     # placeholder — ganti dengan foto sebenar
+  assets/avatar-cikgukb.png     # foto CikguKB (400x400, latar lutsinar)
 scripts/gen-qr.mjs # jana QR daripada ID upline
 wrangler.jsonc     # konfigurasi Cloudflare Worker
 ```
@@ -29,7 +29,7 @@ wrangler.jsonc     # konfigurasi Cloudflare Worker
 | Video Drive / PDF | `public/content.js` → `VIDEO.hd`, `VIDEO.whatsapp`, `VIDEO.pdf` (kongsi "anyone with link") |
 | Langkah bab / tambah bab | `public/content.js` → `BAB` (tetapkan `akanDatang: false` dan isi `langkah`) |
 | OG image (preview WhatsApp/FB) | edit `scripts/og/og.html`, jalankan `npm run build:og` → `public/assets/og.jpg` & `og-square.jpg` (kekalkan < 300 KB untuk WhatsApp) |
-| Avatar mentor | ganti `public/assets/avatar-cikgukb.svg` (atau tukar `src` dalam `app.js` ke `.png/.jpg`) |
+| Avatar mentor | ganti `public/assets/avatar-cikgukb.png` (400×400, latar lutsinar), kemudian `npm run build:og` |
 
 Andaian: app Eastel mengimbas QR yang mengandungi ID ahli sebagai teks biasa (`E-0222933`).
 Jika app perlukan format lain, ubah `QR_PAYLOAD` dalam `scripts/gen-qr.mjs`.
