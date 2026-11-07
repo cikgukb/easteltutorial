@@ -50,6 +50,17 @@ npm run deploy
 Alternatif tanpa CLI: Cloudflare dashboard → Workers & Pages → Create → **Import a repository** → pilih repo ini.
 Build command kosong, deploy command `npx wrangler deploy`.
 
+### Deploy mod "inline" (fail dibenam dalam Worker)
+
+Jika muat naik aset wrangler gagal 401 (contoh: rangkaian/proxy yang menimpa header `Authorization`),
+gunakan mod inline — semua fail `public/` dibenam terus ke dalam `dist/worker.js`:
+
+```bash
+npm run deploy:inline
+```
+
+Nama Worker sama (`eastel-tutorial`), jadi URL kekal. Laman langsung: https://eastel-tutorial.kbcimb.workers.dev
+
 ## Nota kandungan
 
 - Bab 1–6 diambil daripada *Buku Panduan Lengkap EASTEL (CikguKB)*.

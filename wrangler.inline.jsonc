@@ -1,0 +1,9 @@
+// Konfigurasi alternatif: Worker dengan fail statik dibenam (lihat scripts/build-inline.mjs).
+// Guna: npm run deploy:inline
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "eastel-tutorial",
+  "main": "dist/worker.js",
+  "compatibility_date": "2026-11-01",
+  "observability": { "enabled": true }
+}

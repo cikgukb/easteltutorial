@@ -7,7 +7,9 @@
   "scripts": {
     "build:qr": "node scripts/gen-qr.mjs",
     "dev": "wrangler dev",
-    "deploy": "wrangler deploy"
+    "deploy": "wrangler deploy",
+    "build:inline": "node scripts/build-inline.mjs",
+    "deploy:inline": "node scripts/build-inline.mjs && wrangler deploy -c wrangler.inline.jsonc"
   },
   "devDependencies": {
     "qrcode": "^1.5.4",
