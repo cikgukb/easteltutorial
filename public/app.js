@@ -160,12 +160,6 @@ function renderHome() {
             <li><button type="button" data-seek="0" aria-current="true"><span class="t">0:00</span><span>Senarai kandungan</span></button></li>
             ${BAB.map((b) => `<li><button type="button" data-seek="${b.video.mula}"><span class="t">${fmtMasa(b.video.mula)}</span><span>Tutorial ${b.id}: ${esc(b.tajuk)}</span></button></li>`).join("")}
           </ol>
-          <div class="video-links">
-            <a class="btn btn-sm btn-outline" href="${VIDEO.youtube.url}" target="_blank" rel="noopener">${icon("play")} Buka di YouTube</a>
-            <a class="btn btn-sm btn-outline" href="${VIDEO.hd.pautan}" target="_blank" rel="noopener">${icon("play")} Versi Drive (HD)</a>
-            <a class="btn btn-sm btn-outline" href="${VIDEO.whatsapp.pautan}" target="_blank" rel="noopener">${icon("whatsapp")} ${esc(VIDEO.whatsapp.tajuk)}</a>
-            <a class="btn btn-sm btn-outline" href="${VIDEO.pdf.pautan}" target="_blank" rel="noopener">${icon("file")} ${esc(VIDEO.pdf.tajuk)}</a>
-          </div>
         </div>
       </div>
     </section>
