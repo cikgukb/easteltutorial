@@ -9,7 +9,8 @@
     "dev": "wrangler dev",
     "deploy": "wrangler deploy",
     "build:inline": "node scripts/build-inline.mjs",
-    "deploy:inline": "node scripts/build-inline.mjs && wrangler deploy -c wrangler.inline.jsonc"
+    "deploy:inline": "node scripts/build-inline.mjs && wrangler deploy -c wrangler.inline.jsonc",
+    "build:og": "node scripts/og/render.mjs"
   },
   "devDependencies": {
     "qrcode": "^1.5.4",
